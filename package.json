@@ -1,0 +1,8 @@
+{
+  "name": "animehub-2-2",
+  "version": "2.2.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}
