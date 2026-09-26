@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07070b">
+<title>AnimeHub 2.2</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#07070b;color:#f7f7fb;font-family:Inter,Arial,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 8%,#784dff22,transparent 28%),radial-gradient(circle at 90% 30%,#00d9ff12,transparent 30%);z-index:-1}
+#intro{position:fixed;inset:0;background:#040408;z-index:1000;display:grid;place-items:center;overflow:hidden;transition:opacity .7s,visibility .7s}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.gridbg{position:absolute;inset:-30%;background-image:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:46px 46px;transform:perspective(600px) rotateX(58deg) translateY(30%);animation:movegrid 5s linear infinite}
+@keyframes movegrid{to{background-position:0 46px,46px 0}}
+.introbox{position:relative;z-index:2;text-align:center;width:min(92vw,680px)}
+.kanji{display:block;width:100%;height:auto;overflow:visible}
+.kanji text{font-family:"Noto Sans JP","Arial Unicode MS",sans-serif;font-weight:900;font-size:108px;letter-spacing:0;fill:transparent;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:900;stroke-dashoffset:900;paint-order:stroke;filter:drop-shadow(0 0 13px #855dff);animation:draw 3.1s cubic-bezier(.65,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0;fill:#fff}}
+.introline{height:2px;width:min(500px,75vw);margin:5px auto 0;background:linear-gradient(90deg,transparent,#815cff,#00d9ff,transparent);transform:scaleX(0);animation:line 1s 2.45s forwards}
+@keyframes line{to{transform:scaleX(1)}}
+.introsub{margin-top:18px;opacity:0;animation:fade .8s 3.05s forwards;letter-spacing:.45em;color:#9d9daa;font-size:11px}
+.introname{margin-top:8px;font-size:30px;font-weight:900;opacity:0;animation:up .8s 3.2s forwards}
+@keyframes fade{to{opacity:1}}@keyframes up{to{opacity:1;transform:none}}
+header{position:sticky;top:0;z-index:50;background:#09090df0;backdrop-filter:blur(18px);border-bottom:1px solid #22222d}
+nav{max-width:1220px;margin:auto;padding:13px 20px;display:flex;align-items:center;gap:18px}.logo{font-size:21px;font-weight:900;text-decoration:none;color:#fff}.logo b{color:#8b62ff}.links{margin-left:auto;display:flex;gap:5px}.links a{color:#9999a6;text-decoration:none;padding:9px 12px;border-radius:10px}.links a:hover{background:#15151e;color:#fff}.navbtn{background:#111119;border:1px solid #292934;color:#fff;padding:10px 13px;border-radius:12px;cursor:pointer}
+main{max-width:1220px;margin:auto;padding:24px 20px 80px}.hero{min-height:480px;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}.pill{display:inline-block;border:1px solid #292936;background:#101018;border-radius:999px;padding:7px 11px;color:#aaa;font-size:10px;letter-spacing:.16em}
+h1{font-size:clamp(52px,7vw,90px);line-height:.92;letter-spacing:-.065em;margin:20px 0}.grad{background:linear-gradient(90deg,#fff,#a17cff,#58e1ff);color:transparent;background-clip:text}.muted{color:#92929f;line-height:1.7}.actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}.btn{display:inline-block;border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer;text-decoration:none}.primary{background:#fff;color:#08080c}.secondary{background:#14141d;color:#fff;border:1px solid #2c2c38}
+.orb{height:370px;border:1px solid #2c2c39;border-radius:32px;background:radial-gradient(circle at 50% 48%,#7d50bd44,transparent 28%),#101017;display:grid;place-items:center;position:relative;overflow:hidden}.orb:before,.orb:after{content:"";position:absolute;border:1px solid #865cff55;border-radius:50%;animation:orb 9s linear infinite}.orb:before{width:260px;height:260px}.orb:after{width:330px;height:170px;animation-duration:12s}@keyframes orb{to{transform:rotate(360deg)}}.orb span{font-family:"Noto Sans JP";font-size:68px;font-weight:900;filter:drop-shadow(0 0 22px #805cff);animation:float 3.2s ease-in-out infinite}@keyframes float{50%{transform:translateY(-9px)}}
+.section{margin-top:58px}.head{display:flex;align-items:end;justify-content:space-between;margin-bottom:16px}.head h2{font-size:32px;margin:0}
+.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.cat{background:#101017;border:1px solid #272731;border-radius:17px;padding:16px;cursor:pointer;transition:.25s}.cat:hover,.cat.active{border-color:#815cff;transform:translateY(-3px);box-shadow:0 12px 35px #6940ff17}.cat .ico{font-size:23px;margin-bottom:10px}
+.search{display:flex;gap:9px;margin:21px 0 14px}.search input{flex:1;background:#101017;border:1px solid #292934;color:#fff;border-radius:12px;padding:13px 14px;outline:0}.search select{background:#101017;color:#fff;border:1px solid #292934;border-radius:12px;padding:0 10px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#101017;border:1px solid #262630;border-radius:19px;overflow:hidden;transition:.28s}.card:hover{transform:translateY(-6px);border-color:#414151;box-shadow:0 18px 50px #0008}.poster{height:270px;position:relative;background:linear-gradient(145deg,#211b32,#0d0d12);overflow:hidden}.poster img{width:100%;height:100%;display:block;object-fit:cover;transition:.45s}.card:hover .poster img{transform:scale(1.055)}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,#08080dbb)}.poster .fallback{height:100%;display:grid;place-items:center;font-family:"Noto Sans JP";font-size:45px;font-weight:900;color:#fff}.badge{position:absolute;z-index:2;left:10px;top:10px;background:#fff;color:#08080c;border-radius:8px;padding:5px 7px;font-size:9px;font-weight:900}.fav{position:absolute;z-index:2;right:10px;top:10px;border:0;background:#05050a99;color:#fff;border-radius:9px;padding:7px;cursor:pointer}.fav.on{color:#ff5c9a}.body{padding:13px}.body h3{margin:0 0 6px;font-size:15px}.meta{color:#858592;font-size:11px}.watch{display:block;text-align:center;margin-top:12px;background:#171720;color:#fff;border-radius:10px;padding:9px;text-decoration:none;font-size:12px;font-weight:800}.watch:hover{background:#805cff}
+.studio{background:#101017;border:1px solid #292934;border-radius:23px;padding:22px}.studio h2{margin-top:0}.studio-note{color:#92929f;line-height:1.6}.secure{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{width:100%;background:#09090e;border:1px solid #2a2a34;color:#fff;padding:12px;border-radius:11px;outline:0}.full{grid-column:1/-1}.adminStatus{margin-top:12px;color:#8e8e9b;font-size:13px}.devPanel{width:min(820px,100%);background:#101017;border:1px solid #30303c;margin:auto;padding:22px;border-radius:25px;max-height:88vh;overflow:auto;box-shadow:0 30px 100px #000a}.devTop{display:flex;align-items:center;justify-content:space-between;gap:12px}.devTop h2{margin:0}.devGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.devHint{color:#92929f;font-size:13px;line-height:1.55;margin:8px 0 18px}.danger{background:#24151b;color:#ff8aa8;border:1px solid #4b2431}.devModal{align-items:center;padding:14px}.devModal .devPanel{max-height:92vh}.devLock{width:min(460px,100%);background:#101017;border:1px solid #30303c;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000a}.devLock h2{margin:0 0 8px}.devLock p{margin:0 0 18px;color:#92929f;line-height:1.55}.devButton{display:inline-flex;align-items:center;gap:7px}
+footer{text-align:center;border-top:1px solid #20202a;color:#777784;padding:35px 20px}
+.modal{position:fixed;inset:0;background:#000b;backdrop-filter:blur(9px);z-index:90;display:none;align-items:end}.modal.open{display:flex}.sheet{width:min(760px,100%);background:#111119;border:1px solid #30303c;margin:auto;padding:22px;border-radius:25px 25px 0 0;max-height:85vh;overflow:auto}.close{float:right;background:#292934;color:#fff;border:0;border-radius:10px;padding:9px}.episode{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #292933;padding:12px 0}.toast{position:fixed;z-index:200;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;background:#fff;color:#08080c;padding:11px 15px;border-radius:12px;font-weight:800;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.orb{height:290px}.cats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}.links{display:none}}
+@media(max-width:560px){main{padding:17px 13px 60px}.hero{min-height:auto;padding:32px 0}.orb{height:255px}.orb span{font-size:54px}.cats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:repeat(2,1fr);gap:9px}.poster{height:210px}.body{padding:10px}.body h3{font-size:13px}.secure{grid-template-columns:1fr}.full{grid-column:auto}.kanji text{font-size:82px}.introname{font-size:23px}}
+</style>
+</head>
+<body>
+<div id="intro">
+  <div class="gridbg"></div>
+  <div class="introbox">
+    <svg class="kanji" viewBox="0 0 680 180" preserveAspectRatio="xMidYMid meet">
+      <text x="340" y="130" text-anchor="middle" textLength="520" lengthAdjust="spacingAndGlyphs">アニメ</text>
+    </svg>
+    <div class="introline"></div>
+    <div class="introsub">WELCOME TO</div>
+    <div class="introname">ANIMEHUB <span class="grad">2</span></div>
+  </div>
+</div>
+
+<header><nav>
+<a class="logo" href="#">AnimeHub <b>2</b></a>
+<div class="links"><a href="#catalog">Каталог</a></div>
+<button class="navbtn devButton" id="devBtn">⚙ Разработчик</button>
+<button class="navbtn" id="favBtn">♡ <span id="favCount">0</span></button>
+</nav></header>
+
+<main>
+<section class="hero">
+<div><span class="pill">ANIMEHUB 2.2 · ONE-BUTTON DEV MODE</span><h1>Твой мир <span class="grad">аниме.</span></h1><p class="muted">Теперь в каталоге настоящие обложки из AniList, а заставка аккуратно рисует 「アニメ」 строго по центру экрана.</p><div class="actions"><a class="btn primary" href="#catalog">Открыть каталог →</a><button class="btn secondary" id="heroDevBtn">⚙ Режим разработчика</button></div></div>
+<div class="orb"><span>アニメ</span></div>
+</section>
+
+<section class="section" id="catalog">
+<div class="head"><div><h2>Каталог</h2><div class="muted" id="count"></div></div></div>
+<div class="cats" id="cats">
+<div class="cat active" data-c="all"><div class="ico">✦</div>Все</div>
+<div class="cat" data-c="action"><div class="ico">⚔</div>Экшен</div>
+<div class="cat" data-c="fantasy"><div class="ico">◇</div>Фэнтези</div>
+<div class="cat" data-c="romance"><div class="ico">♡</div>Романтика</div>
+<div class="cat" data-c="comedy"><div class="ico">☻</div>Комедия</div>
+<div class="cat" data-c="school"><div class="ico">✎</div>Школа</div>
+</div>
+<div class="search"><input id="q" placeholder="Поиск аниме…"><select id="sort"><option value="popular">Популярные</option><option value="az">А—Я</option></select></div>
+<div class="grid" id="grid"></div>
+</section>
+
+
+</main>
+
+<footer>AnimeHub 2.2 · собственный/лицензированный видеоконтент</footer>
+
+<div class="modal" id="modal"><div class="sheet"><button class="close" id="close">✕</button><h2 id="mt"></h2><p class="muted">Сезон 1</p><div id="elist"></div></div></div>
+
+<div class="modal devModal" id="devAuthModal">
+  <div class="devLock">
+    <button class="close" id="devAuthClose">✕</button>
+    <h2>Режим разработчика</h2>
+    <p>Введите пароль. Проверка выполняется на сервере; пароль не хранится в странице и не выводится после входа.</p>
+    <input class="field" id="pass" type="password" autocomplete="current-password" placeholder="Пароль разработчика">
+    <button class="btn primary" id="login" style="width:100%;margin-top:10px">Войти</button>
+    <div class="adminStatus" id="status">Статус: не авторизован</div>
+  </div>
+</div>
+
+<div class="modal devModal" id="devStudioModal">
+  <div class="devPanel">
+    <div class="devTop">
+      <h2>⚙ Developer Studio</h2>
+      <button class="close" id="devStudioClose">✕</button>
+    </div>
+    <div class="devHint">Ты вошёл в защищённую часть сайта. Здесь можно добавить свой тайтл в каталог. Данные сохраняются сервером в <code>data.json</code>.</div>
+    <div class="devGrid">
+      <input class="field" id="title" placeholder="Название аниме">
+      <input class="field" id="episodes" type="number" min="1" placeholder="Количество серий">
+      <input class="field" id="image" placeholder="URL обложки (необязательно)">
+      <button class="btn primary" id="add">＋ Добавить аниме</button>
+      <button class="btn secondary danger" id="logout">Выйти из режима разработчика</button>
+    </div>
+    <div class="adminStatus" id="studioStatus">Статус: авторизован</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const fallback=[
+{t:'Атака титанов',g:'action',e:25,c:'進撃',q:'Attack on Titan'},
+{t:'Магическая битва',g:'action',e:24,c:'呪術',q:'Jujutsu Kaisen'},
+{t:'Твоё имя',g:'romance',e:1,c:'君の名',q:'Your Name'},
+{t:'Клинок, рассекающий демонов',g:'fantasy',e:26,c:'鬼滅',q:'Demon Slayer'},
+{t:'Моя геройская академия',g:'action',e:13,c:'英雄',q:'My Hero Academia'},
+{t:'Коми не может общаться',g:'school',e:12,c:'古見',q:'Komi Can’t Communicate'},
+{t:'Торадора!',g:'romance',e:25,c:'虎',q:'Toradora!'},
+{t:'Кагуя-сама',g:'comedy',e:12,c:'かぐや',q:'Kaguya-sama Love Is War'}
+];
+let apiData=[], custom=[], active='all', logged=false;
+const $=s=>document.querySelector(s);
+function toast(x){$('#toast').textContent=x;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),1800)}
+function genreOf(genres){let g=(genres||[]).join(' ').toLowerCase();if(g.includes('action'))return'action';if(g.includes('fantasy'))return'fantasy';if(g.includes('romance'))return'romance';if(g.includes('comedy'))return'comedy';if(g.includes('school'))return'school';return'all'}
+function allAnime(){return [...custom,...apiData]}
+function render(){
+ let all=allAnime(), q=$('#q').value.toLowerCase();
+ let a=all.filter(x=>(active==='all'||x.g===active)&&((x.t||'').toLowerCase().includes(q)));
+ if($('#sort').value==='az')a.sort((x,y)=>x.t.localeCompare(y.t,'ru'));
+ $('#count').textContent=a.length+' тайтлов';
+ $('#grid').innerHTML=a.map((x,i)=>`<article class="card"><div class="poster">${x.img?`<img loading="lazy" src="${x.img}" alt="">`:`<div class="fallback">${x.c||'アニメ'}</div>`}<span class="badge">${x.e||'?'} EP</span><button class="fav" onclick="event.stopPropagation();toast('Избранное подключается в профиле')">♡</button></div><div class="body"><h3>${x.t}</h3><div class="meta">${x.meta||x.g||'anime'}</div><a class="watch" href="#" onclick="openAnime(${all.indexOf(x)});return false">Смотреть серии</a></div></article>`).join('');
+}
+function openAnime(index){
+ let x=allAnime()[index]; if(!x)return;
+ $('#mt').textContent=x.t;
+ let n=Math.min(999,x.e||1);
+ $('#elist').innerHTML=Array.from({length:n},(_,i)=>`<div class="episode"><span>Серия ${i+1}</span><button class="navbtn" onclick="toast('Подключите свой или лицензированный видеофайл')">▶</button></div>`).join('');
+ $('#modal').classList.add('open')
+}
+async function loadAniList(){
+ const query=`query{Page(page:1,perPage:24){media(type:ANIME,sort:POPULARITY_DESC){id title{romaji english native} episodes genres coverImage{large} averageScore}}}`;
+ try{
+  const r=await fetch('https://graphql.anilist.co',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query})});
+  const j=await r.json();
+  apiData=(j.data.Page.media||[]).map(x=>({t:x.title.english||x.title.romaji||x.title.native,g:genreOf(x.genres),e:x.episodes||1,img:x.coverImage?.large||'',meta:(x.genres||[]).slice(0,2).join(' · ')||'Anime',score:x.averageScore}));
+  render();
+ }catch(e){apiData=fallback.map(x=>({...x,img:''}));render()}
+}
+async function loadCustom(){
+ try{
+  const r=await fetch('/api/catalog',{cache:'no-store'});
+  if(r.ok){custom=await r.json();render()}
+ }catch(e){}
+}
+async function openDeveloper(){
+ try{
+  const r=await fetch('/api/admin/status',{cache:'no-store'});
+  const j=await r.json();
+  if(j.authenticated){logged=true;$('#devStudioModal').classList.add('open');return}
+ }catch(e){}
+ $('#pass').value='';
+ $('#status').textContent='Статус: требуется вход';
+ $('#devAuthModal').classList.add('open');
+ setTimeout(()=>$('#pass').focus(),80);
+}
+async function loginDeveloper(){
+ const password=$('#pass').value;
+ if(!password)return toast('Введите пароль');
+ try{
+  const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
+  if(!r.ok)throw new Error();
+  logged=true;$('#pass').value='';$('#status').textContent='Статус: авторизован';
+  $('#devAuthModal').classList.remove('open');
+  $('#devStudioModal').classList.add('open');
+  toast('Режим разработчика включён');
+ }catch(e){$('#status').textContent='Статус: вход не выполнен';toast('Неверный пароль или сервер не запущен')}
+}
+async function addAnime(){
+ if(!logged)return openDeveloper();
+ const body={title:$('#title').value.trim(),episodes:+$('#episodes').value||1,image:$('#image').value.trim()};
+ if(!body.title)return toast('Введите название');
+ try{
+  const r=await fetch('/api/admin/anime',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(r.status===401){logged=false;return openDeveloper()}
+  if(!r.ok)throw new Error();
+  custom=await r.json();render();$('#title').value='';$('#episodes').value='';$('#image').value='';toast('Аниме добавлено в каталог');
+ }catch(e){toast('Не удалось добавить')}
+}
+async function logoutDeveloper(){
+ try{await fetch('/api/admin/logout',{method:'POST'})}catch(e){}
+ logged=false;$('#devStudioModal').classList.remove('open');toast('Режим разработчика выключен');
+}
+$('#q').oninput=render;$('#sort').onchange=render;
+$('#cats').onclick=e=>{let x=e.target.closest('.cat');if(!x)return;document.querySelectorAll('.cat').forEach(z=>z.classList.remove('active'));x.classList.add('active');active=x.dataset.c;render()};
+$('#close').onclick=()=>$('#modal').classList.remove('open');$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('open')};
+$('#devBtn').onclick=openDeveloper;$('#heroDevBtn').onclick=openDeveloper;
+$('#devAuthClose').onclick=()=>$('#devAuthModal').classList.remove('open');
+$('#devStudioClose').onclick=()=>$('#devStudioModal').classList.remove('open');
+$('#devAuthModal').onclick=e=>{if(e.target.id==='devAuthModal')$('#devAuthModal').classList.remove('open')};
+$('#devStudioModal').onclick=e=>{if(e.target.id==='devStudioModal')$('#devStudioModal').classList.remove('open')};
+$('#login').onclick=loginDeveloper;
+$('#pass').onkeydown=e=>{if(e.key==='Enter')loginDeveloper()};
+$('#add').onclick=addAnime;
+$('#logout').onclick=logoutDeveloper;
+$('#favBtn').onclick=()=>toast('Избранное будет храниться в профиле');
+setTimeout(()=>$('#intro').classList.add('hide'),4700);
+loadAniList();loadCustom();
+</script>
+</body></html>
